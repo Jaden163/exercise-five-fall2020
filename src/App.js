@@ -33,6 +33,19 @@ function App() {
     }
   }, [firebaseConfig]);
 
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      // check if user login
+      if (user) {
+        setLoggedIn(true);
+        setUserInfo(user);
+      } else {
+        setLoggedIn(false);
+      }
+      setLoading(false);
+    });
+  }, []);
+
   // login func
   function LoginFunction(e) {
     // stop form from submitting as normal
@@ -53,7 +66,18 @@ function App() {
   }
 
   // logout func
-  function LogoutFunction(e) {}
+  function LogoutFunction(e) {
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        setLoggedIn(false);
+        setUserInfo({});
+      })
+      .catch(function (error) {
+        console.log("LOGOUT ERROR", error);
+      });
+  }
 
   // acc creation
   function CreateAccountFunction(e) {
@@ -73,19 +97,35 @@ function App() {
       });
   }
 
-  console.log({ loggedIn });
+  // could load loading component
+  // if still loading, return nothing
+  if (loading) return null;
+
   return (
     <div className="App">
       <Header loggedIn={loggedIn} LogoutFunction={LogoutFunction} />
       <Router>
-        <Route path="/login">
-          <Login LoginFunction={LoginFunction} />
+        <Route exact path="/login">
+          {/* Not logged in */}
+          {!loggedIn ? (
+            <Login LoginFunction={LoginFunction} />
+          ) : (
+            <Redirect to="/" />
+          )}
         </Route>
-        <Route path="/create-account">
-          <CreateAccount CreateAccountFunction={CreateAccountFunction} />
+        <Route exact path="/create-account">
+          {!loggedIn ? (
+            <CreateAccount CreateAccountFunction={CreateAccountFunction} />
+          ) : (
+            <Redirect to="/" />
+          )}
         </Route>
-        <Route path="/">
-          <UserProfile />
+        <Route exact path="/">
+          {!loggedIn ? (
+            <Redirect to="/login" />
+          ) : (
+            <UserProfile userInfo={userInfo} />
+          )}
         </Route>
       </Router>
     </div>

@@ -1,18 +1,31 @@
 .App {
+  max-width: 1040px;
+  margin: 0 auto;
 }
 .Header {
 }
 .Header nav {
   display: flex;
   justify-content: flex-end;
-  max-width: 1040px;
-  margin: 0 auto;
 }
 .Header nav a {
   color: black;
+  cursor: pointer;
   display: block;
+  font-size: 20px;
+  font-weight: bold;
   margin: 10px;
+  text-decoration: underline;
 }
 
-.SignupForm {
+.SignUpForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.SignUpForm input,
+.SignUpForm {
+  margin-bottom: 30px;
+  max-width: 400px;
+  width: 100%;
 }
