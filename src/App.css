@@ -18,13 +18,16 @@
   text-decoration: underline;
 }
 
-.SignUpForm {
+.SignUpForm,
+.LoginForm {
   display: flex;
   flex-direction: column;
 }
 
 .SignUpForm input,
-.SignUpForm {
+.SignUpForm,
+.LoginForm input,
+.LoginForm {
   margin-bottom: 30px;
   max-width: 400px;
   width: 100%;
